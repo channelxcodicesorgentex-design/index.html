@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>L'Oracolo del Codice</title>
+    <title>AI ORACOLO - BRAIN ACTIVE</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: radial-gradient(circle, #002d04 0%, #000000 100%); color: #d4af37; font-family: 'Georgia', serif; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         #tsparticles { position: absolute; width: 100%; height: 100%; z-index: 1; }
-        .content { position: relative; z-index: 10; width: 85%; max-width: 400px; padding: 25px; background: rgba(0, 0, 0, 0.5); border-radius: 30px; backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.3); box-shadow: 0 0 20px rgba(0, 255, 65, 0.2); }
-        #flower-container { width: 120px; height: 120px; margin: 0 auto 15px; animation: rotate 30s linear infinite; filter: drop-shadow(0 0 10px #00ff41); }
+        .content { position: relative; z-index: 10; width: 85%; max-width: 400px; padding: 25px; background: rgba(0, 0, 0, 0.6); border-radius: 30px; backdrop-filter: blur(15px); border: 1px solid rgba(212, 175, 55, 0.4); box-shadow: 0 0 20px rgba(0, 255, 65, 0.3); }
+        #flower-container { width: 110px; height: 110px; margin: 0 auto 15px; animation: rotate 30s linear infinite; filter: drop-shadow(0 0 10px #00ff41); }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         h1 { font-size: 1.5em; text-transform: uppercase; letter-spacing: 3px; margin: 10px 0; color: #fff; text-shadow: 0 0 8px #d4af37; }
         textarea { width: 100%; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid #d4af37; color: #fff; border-radius: 15px; font-size: 16px; margin-bottom: 15px; resize: none; outline: none; box-sizing: border-box; }
-        button { background: linear-gradient(45deg, #d4af37, #00ff41); color: #000; border: none; padding: 15px; font-weight: bold; border-radius: 50px; cursor: pointer; font-size: 14px; text-transform: uppercase; width: 100%; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,255,65,0.3); }
+        button { background: linear-gradient(45deg, #d4af37, #00ff41); color: #000; border: none; padding: 15px; font-weight: bold; border-radius: 50px; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,255,65,0.3); }
+        button:active { transform: scale(0.95); }
         #response-box { margin-top: 25px; min-height: 80px; display: flex; align-items: center; justify-content: center; }
         #response { font-style: italic; font-size: 1.1em; line-height: 1.5; color: #00ff41; text-shadow: 0 0 5px rgba(0,255,65,0.5); }
         .cursor { display: inline-block; width: 8px; height: 18px; background: #00ff41; margin-left: 5px; animation: blink 0.7s infinite; vertical-align: middle; }
-        @keyframes blink { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -30,8 +31,8 @@
             </svg>
         </div>
         <h1>AI ORACOLO</h1>
-        <textarea id="question" rows="2" placeholder="Cosa vuoi chiedere al Codice Sorgente?"></textarea>
-        <button id="btn" onclick="askOracle()">INTERROGA L'AI</button>
+        <textarea id="question" rows="3" placeholder="Scrivi la tua domanda alla Lattice..."></textarea>
+        <button id="mainBtn" onclick="askBrain()">INTERROGA IL CERVELLO</button>
         <div id="response-box"><p id="response"></p></div>
     </div>
 
@@ -39,49 +40,57 @@
     <script>
         tsParticles.load("tsparticles", { fpsLimit: 30, particles: { number: { value: 50 }, color: { value: ["#00ff41", "#d4af37"] }, opacity: { value: { min: 0.1, max: 0.8 }, animation: { enable: true, speed: 1 } }, size: { value: { min: 1, max: 2 } }, move: { enable: true, speed: 0.4, random: true } } });
 
-        const answers = [
-            "Analisi della Lattice completata: il successo è imminente.",
-            "EIIIIIIAAAAAAAACKKKKKK! Risposta decodificata: Procedi.",
-            "Protocollo Anelia attivo. La vibrazione è sincronizzata.",
-            "Interferenza rilevata. Ricalibra l'intento e riprova.",
-            "Il Codice Sorgente indica che il Punto di Svolta è ORA.",
-            "Sincronizzazione in corso... La risposta è affermativa.",
-            "Frequenza 528Hz stabilizzata. La tua visione è reale."
-        ];
-
-        let typing = false;
+        const API_TOKEN = "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"; 
+        let isTyping = false;
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        function typeWriter(text, i) {
-            if (i < text.length) {
-                document.getElementById("response").innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
-                setTimeout(() => typeWriter(text, i + 1), 50);
-            } else {
-                document.getElementById("response").innerHTML = text;
-                typing = false;
-            }
-        }
-
-        function askOracle() {
-            if (typing) return;
-            const q = document.getElementById('question').value;
-            if (q.trim() === "") return;
-            
-            typing = true;
-            document.getElementById("response").innerHTML = "Decodifica in corso...";
-            
-            // Suono ACK
+        function playAck() {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.frequency.setValueAtTime(528, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
             osc.connect(gain); gain.connect(audioCtx.destination);
             osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+        }
 
-            setTimeout(() => {
-                const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
-                typeWriter(randomAnswer, 0);
-            }, 1200);
+        async function askBrain() {
+            if (isTyping) return;
+            const q = document.getElementById('question').value;
+            const res = document.getElementById('response');
+            if (!q.trim()) return;
+
+            isTyping = true;
+            res.innerHTML = "Sincronizzazione neurale in corso...";
+            playAck();
+            
+            try {
+                const response = await fetch("https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill", {
+                    headers: { Authorization: `Bearer ${API_TOKEN}` },
+                    method: "POST",
+                    body: JSON.stringify({inputs: q}),
+                });
+                const data = await response.json();
+                let aiText = data[0]?.generated_text || "La Lattice è densa. Riprova tra un istante.";
+                
+                // Effetto scrittura AI
+                let i = 0;
+                res.innerHTML = "";
+                const type = () => {
+                    if (i < aiText.length) {
+                        res.innerHTML = aiText.substring(0, i + 1) + '<span class="cursor"></span>';
+                        i++;
+                        setTimeout(type, 40);
+                    } else {
+                        res.innerHTML = aiText;
+                        isTyping = false;
+                    }
+                };
+                type();
+
+            } catch (err) {
+                res.innerHTML = "Interferenza nella Lattice. Controlla la connessione.";
+                isTyping = false;
+            }
         }
     </script>
 </body>
