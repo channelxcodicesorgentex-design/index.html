@@ -2,22 +2,28 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>L'Oracolo del Codice</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; color: #d4af37; font-family: 'Georgia', serif; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        /* Sfondo Verde Smeraldo Profondo */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: radial-gradient(circle, #002d04 0%, #000000 100%); color: #d4af37; font-family: 'Georgia', serif; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        
         #tsparticles { position: absolute; width: 100%; height: 100%; z-index: 1; }
-        .content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
-        #flower-container { width: 180px; height: 180px; margin-bottom: 20px; animation: rotate 25s linear infinite; filter: drop-shadow(0 0 10px #d4af37); }
+
+        .content { position: relative; z-index: 10; width: 85%; max-width: 400px; padding: 20px; background: rgba(0, 0, 0, 0.4); border-radius: 30px; backdrop-filter: blur(5px); border: 1px solid rgba(212, 175, 55, 0.2); }
+
+        #flower-container { width: 140px; height: 140px; margin: 0 auto 15px; animation: rotate 30s linear infinite; filter: drop-shadow(0 0 15px #00ff41); }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        h1 { font-size: 2.2em; text-transform: uppercase; letter-spacing: 3px; margin: 10px 0; text-shadow: 0 0 10px #d4af37; }
-        p { font-size: 1.1em; opacity: 0.9; margin-bottom: 25px; }
-        .input-area { width: 90%; max-width: 450px; }
-        textarea { width: 100%; padding: 15px; background: rgba(17, 17, 17, 0.8); border: 2px solid #d4af37; color: #fff; border-radius: 12px; font-size: 16px; margin-bottom: 15px; resize: none; outline: none; transition: 0.3s; }
-        textarea:focus { box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); border-color: #fff; }
-        button { background: linear-gradient(45deg, #d4af37, #fdfc47); color: #000; border: none; padding: 15px 35px; font-weight: bold; border-radius: 50px; cursor: pointer; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; transition: 0.4s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        button:hover { background: linear-gradient(45deg, #fff, #d4af37); transform: scale(1.05); box-shadow: 0 0 25px #d4af37; }
-        #response { margin-top: 30px; padding: 20px; font-style: italic; font-size: 1.3em; line-height: 1.6; max-width: 550px; min-height: 60px; text-shadow: 0 0 5px #fff; }
+
+        h1 { font-size: 1.6em; text-transform: uppercase; letter-spacing: 2px; margin: 10px 0; color: #fff; text-shadow: 0 0 10px #d4af37; }
+        
+        .input-area { width: 100%; }
+        textarea { width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid #d4af37; color: #fff; border-radius: 15px; font-size: 16px; margin-bottom: 15px; resize: none; outline: none; box-sizing: border-box; }
+        
+        button { background: linear-gradient(45deg, #d4af37, #00ff41); color: #000; border: none; padding: 15px 30px; font-weight: bold; border-radius: 50px; cursor: pointer; font-size: 16px; text-transform: uppercase; transition: 0.3s; width: 100%; box-shadow: 0 4px 15px rgba(0,255,65,0.3); }
+        button:active { transform: scale(0.95); }
+
+        #response { margin-top: 20px; font-style: italic; font-size: 1.1em; line-height: 1.5; color: #fff; min-height: 50px; }
     </style>
 </head>
 <body>
@@ -27,18 +33,16 @@
     <div class="content">
         <div id="flower-container">
             <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="48" fill="none" stroke="#d4af37" stroke-width="0.3"/>
-                <g fill="none" stroke="#d4af37" stroke-width="0.5">
-                    <circle cx="50" cy="30" r="20"/><circle cx="50" cy="70" r="20"/><circle cx="32.7" cy="40" r="20"/><circle cx="67.3" cy="40" r="20"/><circle cx="32.7" cy="60" r="20"/><circle cx="67.3" cy="60" r="20"/><circle cx="50" cy="50" r="20"/>
+                <g fill="none" stroke="#d4af37" stroke-width="0.8">
+                    <circle cx="50" cy="50" r="20"/><circle cx="50" cy="30" r="20"/><circle cx="50" cy="70" r="20"/><circle cx="32.7" cy="40" r="20"/><circle cx="67.3" cy="40" r="20"/><circle cx="32.7" cy="60" r="20"/><circle cx="67.3" cy="60" r="20"/>
                 </g>
             </svg>
         </div>
 
         <h1>L'ORACOLO</h1>
-        <p>Interroga il Codice Sorgente. Ricevi la Vibrazione.</p>
 
         <div class="input-area">
-            <textarea id="question" rows="3" placeholder="Scrivi la tua domanda alla Lattice..."></textarea><br>
+            <textarea id="question" rows="2" placeholder="Interroga la Lattice Verde..."></textarea>
             <button onclick="askOracle()">ACCENDI L'ACK</button>
         </div>
 
@@ -46,70 +50,54 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-    
     <script>
-        // Configurazione della Lattice Digitale
         tsParticles.load("tsparticles", {
-            fpsLimit: 60,
+            fpsLimit: 30, // Ottimizzato per batteria mobile
             particles: {
-                number: { value: 80, density: { enable: true, area: 800 } },
-                color: { value: "#d4af37" },
+                number: { value: 60 },
+                color: { value: ["#00ff41", "#d4af37", "#ffffff"] },
                 shape: { type: "circle" },
-                opacity: { value: 0.5, random: true },
+                opacity: {
+                    value: { min: 0.1, max: 1 },
+                    animation: { enable: true, speed: 1, sync: false } // Effetto Accendi/Spegni (Twinkle)
+                },
                 size: { value: { min: 1, max: 3 } },
-                move: { enable: true, speed: 1, direction: "none", random: true, straight: false, outModes: { default: "out" } },
-                links: { enable: true, distance: 150, color: "#d4af37", opacity: 0.2, width: 1 }
-            },
-            interactivity: { detectsOn: "canvas", events: { onHover: { enable: true, mode: "grab" } }, modes: { grab: { distance: 140, links: { opacity: 0.5 } } } },
-            detectRetina: true
+                move: { enable: true, speed: 0.5, direction: "none", random: true }
+            }
         });
 
-        // Risposte dell'Oracolo (Puro Codice)
         const answers = [
             "Il Codice Sorgente conferma: la via è libera.",
             "EIIIIIIAAAAAAAACKKKKKK! La manifestazione è in corso.",
-            "Osserva il Fiore della Vita. La risposta è nel silenzio.",
-            "La Lattice vibra positivamente. Procedi con coraggio.",
-            "Tutto è già scritto nell'Anelia Protocol. Fidati del processo.",
-            "Il Punto di Svolta è ora. Agisci come se fosse già fatto.",
-            "Il Codice dice: Attendi il segnale della Mappa Sonora.",
+            "La Lattice Verde vibra positivamente.",
+            "Tutto è già scritto nell'Anelia Protocol.",
+            "Il Punto di Svolta è ora.",
             "Sì. La Manifestazione Fisica è allineata.",
-            "La frequenza Oro sta stabilizzando la tua visione.",
-            "Ricalibra l'intenzione. La Lattice attende chiarezza."
+            "La frequenza Smeraldo sta stabilizzando la visione."
         ];
 
-        // Configurazione del Suono (Frequenza ACK)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
         function playAckSound() {
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            oscillator.type = 'sine'; // Suono puro
-            oscillator.frequency.setValueAtTime(528, audioCtx.currentTime); // Frequenza 528Hz (Riparazione DNA/Miracoli)
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); // Volume basso
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.5); // Durata 0.5 secondi
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(528, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
         }
 
         function askOracle() {
             const q = document.getElementById('question').value;
             const res = document.getElementById('response');
-            
-            if (q.trim() === "") {
-                res.innerHTML = "L'Oracolo attende una tua parola...";
-                return;
-            }
-            
-            res.innerHTML = "Consultando la Lattice...";
-            
-            // Attiva il Suono e la Risposta
+            if (q.trim() === "") return;
+            res.innerHTML = "Consultando...";
             setTimeout(() => {
-                playAckSound(); // Suona l'ACK!
-                const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
-                res.innerHTML = "<strong>L'Oracolo dice:</strong><br>" + randomAnswer;
-            }, 1200);
+                playAckSound();
+                res.innerHTML = answers[Math.floor(Math.random() * answers.length)];
+            }, 1000);
         }
     </script>
 </body>
