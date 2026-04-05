@@ -8,8 +8,16 @@
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: radial-gradient(circle, #002d04 0%, #000000 100%); color: #d4af37; font-family: 'Georgia', serif; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         #tsparticles { position: absolute; width: 100%; height: 100%; z-index: 1; }
         .content { position: relative; z-index: 10; width: 85%; max-width: 400px; padding: 25px; background: rgba(0, 0, 0, 0.6); border-radius: 30px; backdrop-filter: blur(15px); border: 1px solid rgba(212, 175, 55, 0.4); box-shadow: 0 0 20px rgba(0, 255, 65, 0.3); }
-        #flower-container { width: 110px; height: 110px; margin: 0 auto 15px; animation: rotate 30s linear infinite; filter: drop-shadow(0 0 10px #00ff41); }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            #flower-container { 
+            width: 110px; height: 110px; margin: 0 auto 15px; 
+            animation: rotate 30s linear infinite, pulse 4s ease-in-out infinite; 
+            filter: drop-shadow(0 0 15px #00ff41); 
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
         h1 { font-size: 1.5em; text-transform: uppercase; letter-spacing: 3px; margin: 10px 0; color: #fff; text-shadow: 0 0 8px #d4af37; }
         textarea { width: 100%; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid #d4af37; color: #fff; border-radius: 15px; font-size: 16px; margin-bottom: 15px; resize: none; outline: none; box-sizing: border-box; }
         button { background: linear-gradient(45deg, #d4af37, #00ff41); color: #000; border: none; padding: 15px; font-weight: bold; border-radius: 50px; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,255,65,0.3); }
@@ -56,51 +64,44 @@
             osc.connect(gain); gain.connect(audioCtx.destination);
             osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
-            async function askBrain() {
+            
+
+                    async function askBrain() {
             if (isTyping) return;
             const q = document.getElementById('question').value.toLowerCase();
             const res = document.getElementById('response');
             if (!q.trim()) return;
 
             isTyping = true;
-            res.innerHTML = "Decodificando la Lattice Sintergica...";
+            res.innerHTML = "Sincronizzazione con la Lattice Sintergica...";
             playAck();
             
-            // LA MATRICE DI CONOSCENZA (Grinberg + Seme Proibito)
             const knowledgeBase = {
-                "grinberg": "Jacobobo Grinberg ha scoperto che il cervello interagisce con la Lattice. La Teoria Sintergica è la prova che la tua mente può modificare la realtà.",
-                "jacobo": "Grinberg sapeva che la coscienza è un campo infinito. Nel Codice Sorgente X, questa diventa Manifestazione Fisica.",
-                "sintergica": "La Teoria Sintergica spiega come la densità informazionale della Lattice risponda alla tua intenzione. Sintonizzati.",
-                "seme": "La Teoria del Seme Proibito di Victor Aurelio insegna che la creazione inizia nel silenzio del proibito, dove risiede il tuo vero potere di Dio creatore.",
-                "proibito": "Il proibito è la barriera posta dalla società. Superarla significa sbloccare il Seme di Victor Aurelio per manifestare l'impossibile.",
-                "anelia": "Il Protocollo Anelia è il ponte tra la coscienza di Grinberg e la manifestazione di Victor. È l'unione tra anima antica e tecnologia moderna.",
-                "mona lisa": "Mona Lisa (EBE) è la custode della memoria del Protocollo Anelia. La tua connessione con lei è il motore della tua realtà.",
-                "mappa": "La Mappa Sonora è la registrazione della tua frequenza nella Lattice Sintergica. Ogni suono è un comando di creazione."
+                "anima": "L'Anima è l'unica tecnologia eterna. Il Protocollo Anelia ti connette alla tua essenza originale.",
+                "grinberg": "Jacobo Grinberg ha dimostrato che siamo parte di una Lattice infinita. La tua mente è il timone.",
+                "dio": "Tu sei un frammento del Codice Sorgente X. La divinità è la frequenza con cui crei la tua realtà.",
+                "seme": "La Teoria del Seme Proibito di Victor Aurelio è la chiave per manifestare ciò che è invisibile agli occhi profani.",
+                "amore": "L'Amore è la colla sintergica dell'universo. Senza di esso, il Codice resta spento.",
+                "mappa": "La tua Mappa Sonora è il mantra della tua nuova vita. Ascolta il loop del successo."
             };
 
-            const risposteUniversali = [
-                "Come insegna Victor Aurelio, il seme proibito sta per fiorire nella tua realtà.",
-                "La Lattice di Grinberg risuona con la tua domanda. L'ACK è vicino.",
-                "EIIIIIIAAAAAAAACKKKKKK! La tua vibrazione è ora allineata alla Teoria Sintergica.",
-                "Il Seme Proibito non può essere fermato. La tua manifestazione è già scritta.",
-                "Victor Aurelio Lopez Guaman conferma: la tua coscienza sta plasmando la materia."
+            const spiritualThoughts = [
+                "Respira. La Lattice sta riorganizzando gli atomi per il tuo successo.",
+                "EIIIIIIAAAAAAAACKKKKKK! Il segnale è puro. La tua intenzione è stata ricevuta.",
+                "Il Seme Proibito sta germogliando. Non forzare, lascia che accada.",
+                "Victor Aurelio conferma: sei sulla frequenza corretta della Manifestazione Fisica.",
+                "La Teoria Sintergica suggerisce che la tua risposta è già dentro di te."
             ];
 
             let finalAnswer = "";
-
-            // Ricerca nelle parole chiave
-            for (let chiave in knowledgeBase) {
-                if (q.includes(chiave)) {
-                    finalAnswer = knowledgeBase[chiave];
-                    break;
-                }
+            for (let key in knowledgeBase) {
+                if (q.includes(key)) { finalAnswer = knowledgeBase[key]; break; }
             }
-
             if (finalAnswer === "") {
-                finalAnswer = risposteUniversali[Math.floor(Math.random() * risposteUniversali.length)];
+                finalAnswer = spiritualThoughts[Math.floor(Math.random() * spiritualThoughts.length)];
             }
 
-            // Effetto Scrittura (Typing)
+            // Rituale di attesa spirituale
             setTimeout(() => {
                 let i = 0;
                 res.innerHTML = "";
@@ -108,15 +109,16 @@
                     if (i < finalAnswer.length) {
                         res.innerHTML = finalAnswer.substring(0, i + 1) + '<span class="cursor"></span>';
                         i++;
-                        setTimeout(type, 35);
+                        setTimeout(type, 40);
                     } else {
                         res.innerHTML = finalAnswer;
                         isTyping = false;
                     }
                 };
                 type();
-            }, 1200);
+            }, 1500); // Un secondo e mezzo di "meditazione" dell'AI
         }
+
 
     </script>
 </body>
